@@ -33,7 +33,7 @@ export class UI {
     }
     generateDayElements(dayData) {
         const { day, update, data } = dayData;
-        const elemsHtml = Object.keys(data).map(key => `
+        const elemsHtml = Object.keys(data || {})?.map(key => `
                 <div class="group-item ">
                     <div class="group-name">Група ${key}</div>
                     <div class="group-values">
@@ -43,9 +43,9 @@ export class UI {
                 `).join("");
         const dayElement = fromHtml(`
                 <div class="day-data-container">
-                    <h2 class="day-header">${day}</h2>
-                    <h3>${update}</h3>
-                    <div class="day-grups-container">${elemsHtml}</div>
+                    <h2 class="day-header">${day || "Графік ще не сформований"}</h2>
+                    <h3>${update || ""}</h3>
+                    <div class="day-grups-container">${elemsHtml || ""}</div>
                 </div>
             `);
         return dayElement;

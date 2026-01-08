@@ -31,6 +31,7 @@ export const fetchUrl = async (url) => {
     };
 }
 const parseGroups = (data) => {
+    if (!data) return {};
     const dayRegex = /графік[а-яі\s\d\.]+/gi;
     const lastUpdateRegex = /Інформація[а-яі\s\d\.\:]+/gi;
     const infoDate = data.match(dayRegex)?.[0];
