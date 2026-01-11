@@ -29,22 +29,61 @@ export class UI {
         const dataContainer = fromHtml(`
         <div id="data-container" class="data-container" ></div>
       `);
-        this.app.append(controls, dataContainer);
+        const footer = fromHtml(`
+        <footer>XarT, 2026</footer>
+        `)
+        this.app.append(controls, dataContainer, footer);
     }
     generateDayElements(dayData) {
         const { day, update, data } = dayData;
+        const nowDay = new Date().getDate();
+        const targetDay = day?.getDate();
+        const isToday = targetDay === nowDay;
+        const targetDateString = (date) => {
+            if (!date) return "";
+
+            const relativeDate = isToday ? "сьогодні" : "завтра";
+            return `Графік відключень на ${relativeDate} (${date.toLocaleDateString()})`;
+        }
+        const lastUpdateString = (date) => {
+            if (!date) return "";
+            const isToday = date.getDate() === new Date().getDate();
+            const timeString = date.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+            return `Останнє оновлення на сайті: ${isToday ? timeString : date.toLocaleString()}`
+        }
+        const dayHtml = (data) => {
+            if (!data?.length) return "Світло є.";
+            return data?.map(({ from, to }) => {
+                const getMins = (time) => {
+                    const [hours, mins] = time.split(":");
+                    const totalMins = parseInt(mins) + parseInt(hours) * 60;
+                    return totalMins;
+                }
+                const fromMinutes = getMins(from);
+                const toMinutes = getMins(to);
+                const totalMins = toMinutes - fromMinutes;
+                const hours = ~~(totalMins / 60);
+                const mins = totalMins - hours * 60;
+                const fromPercent = 100 * fromMinutes / (60 * 24);
+                const toPercent = 100 * toMinutes / (60 * 24);
+                return `<div>з ${from} до ${to}[${hours > 0 ? `${hours}год.` : ""}${mins > 0 ? `${mins}хв.` : ""}]</div>`
+            }).join("")
+        }
         const elemsHtml = Object.keys(data || {})?.map(key => `
                 <div class="group-item ">
                     <div class="group-name">Група ${key}</div>
                     <div class="group-values">
-                        ${data[key]?.map(value => `<div>${value}</div>`).join("")}
+                        ${dayHtml(data[key])}
                     </div>
                 </div>
                 `).join("");
         const dayElement = fromHtml(`
                 <div class="day-data-container">
-                    <h2 class="day-header">${day || "Графік ще не сформований"}</h2>
-                    <h3>${update || ""}</h3>
+                    <h2 class="day-header">${targetDateString(day)}</h2>
+                    <h3>${lastUpdateString(update)}</h3>
                     <div class="day-grups-container">${elemsHtml || ""}</div>
                 </div>
             `);
