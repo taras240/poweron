@@ -4,13 +4,20 @@
   font-family: system-ui;
 }
 
+:root {
+  --font-color: whitesmoke;
+  --bg-color: black;
+}
+
 .app {
+  background: var(--bg-color);
   height: calc(100vh - 0rem);
   width: 100vw;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: start;
+  color: var(--font-color);
   /* padding: 1rem; */
 }
 
@@ -19,6 +26,9 @@
 }
 
 .button {
+  position: relative;
+  color: var(--font-color);
+  background: var(--bg-color);
   font-size: 1rem;
   font-weight: 500;
   padding: 0.25rem 1rem;
@@ -29,14 +39,14 @@
 
 .button:hover {
   padding: 0.25rem 1rem;
-  border: 1px solid black;
+  border: 1px solid var(--font-color);
 }
 
 .button:active {
   padding: 0.25rem 1rem;
-  border: 1px solid black;
-  background-color: black;
-  color: white;
+  border: 1px solid var(--font-color);
+  background-color: var(--font-color);
+  color: var(--bg-color);
 }
 
 .data-container {
@@ -71,10 +81,13 @@
 .group-item {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   font-size: 1.2rem;
-  border: 1px solid black;
-  border-radius: 2px;
+  border: 1px solid #a3a3a3;
+  border-radius: 5px;
   align-items: center;
+  background: #ffffff3d;
+  padding: 0.5rem;
 }
 
 .group-values {
@@ -83,13 +96,15 @@
   display: flex;
   /* gap: 2rem; */
   flex-direction: column;
-  padding: 0.5rem;
 }
 
 .group-name {
   align-self: stretch;
   font-weight: bold;
-  padding: 0.5rem;
+}
+
+.last-update-time {
+  opacity: 0.5;
 }
 
 footer {
@@ -112,4 +127,33 @@ footer {
   width: calc(var(--to) - var(--from));
   height: 2rem;
   background: red;
+}
+
+.button.update-button {
+  padding-left: 2rem;
+}
+
+.update-button::before {
+  content: "";
+  position: absolute;
+  transform: translateY(-50%) rotateZ(45deg);
+  top: 50%;
+  left: 0.5rem;
+  width: 1.25rem;
+  aspect-ratio: 1;
+  background-color: var(--font-color);
+  mask-image: url(./assets/img/sync.svg);
+  mask-size: contain;
+  transition: 150ms;
+
+}
+
+.update-button:hover::before {
+  /* background-color: var(--bg-color); */
+  transform: translateY(-50%) rotateZ(135deg);
+}
+
+.update-button:active::before {
+  background-color: var(--bg-color);
+  transform: translateY(-50%) rotateZ(135deg);
 }

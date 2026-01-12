@@ -19,7 +19,10 @@ export class UI {
         <div id="data-controls" class="data-controls"></div>
       `);
         const updateButton = fromHtml(`
-            <button id="update-data" class="update-button button">Оновити</button>
+            <button id="update-data" class="update-button button">
+            
+                Оновити
+            </button>
         `);
         updateButton.addEventListener("click", (event) => {
             console.log("Update");
@@ -69,7 +72,7 @@ export class UI {
                 const mins = totalMins - hours * 60;
                 const fromPercent = 100 * fromMinutes / (60 * 24);
                 const toPercent = 100 * toMinutes / (60 * 24);
-                return `<div>з ${from} до ${to}[${hours > 0 ? `${hours}год.` : ""}${mins > 0 ? `${mins}хв.` : ""}]</div>`
+                return `<div title="${hours > 0 ? `${hours}год.` : ""}${mins > 0 ? `${mins}хв.` : ""}">з ${from} до ${to}</div>`
             }).join("")
         }
         const elemsHtml = Object.keys(data || {})?.map(key => `
@@ -83,7 +86,7 @@ export class UI {
         const dayElement = fromHtml(`
                 <div class="day-data-container">
                     <h2 class="day-header">${targetDateString(day)}</h2>
-                    <h3>${lastUpdateString(update)}</h3>
+                    <h3 class="last-update-time">${lastUpdateString(update)}</h3>
                     <div class="day-grups-container">${elemsHtml || ""}</div>
                 </div>
             `);
